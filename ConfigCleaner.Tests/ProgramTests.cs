@@ -13,7 +13,7 @@ namespace ConfigCleaner.Tests
     public class ProgramTests
     {
         [TestMethod]
-        public void Main_WithNoArguments_ReturnsHelpText()
+        public void Main_WithNoArguments_WritesHelpTextToConsole()
         {
             using (var sw = new StringWriter())
             {   
@@ -30,7 +30,7 @@ namespace ConfigCleaner.Tests
         }
 
         [TestMethod]
-        public void Main_WithHelpSwitch_ReturnsHelpText()
+        public void Main_WithHelpSwitch_WritesHelpTextToConsole()
         {
             using (var sw = new StringWriter())
             {
