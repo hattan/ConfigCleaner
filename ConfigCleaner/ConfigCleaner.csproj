@@ -50,13 +50,13 @@
     <None Include="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="configs\ec.qa.config">
+    <None Include="configs\sample2.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="configs\ir500.config">
+    <None Include="configs\sample3.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="configs\ec.prd.config">
+    <None Include="configs\sample1.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

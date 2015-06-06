@@ -45,5 +45,22 @@ namespace ConfigCleaner.Tests
                 Assert.IsTrue(sw.ToString().StartsWith(helpTextStart));
             }
         }
+
+        [TestMethod]
+        public void Main_InvalidInputFolder_WritesFriendlyErrorToConsole()
+        {
+            using (var sw = new StringWriter())
+            {
+                //Arrange
+                Console.SetOut(sw);
+                string helpTextStart = "Error: Input folder not found" + Environment.NewLine;
+
+                //Act
+                Program.Main(new[] { "notARealfolder" });
+
+                //Assert
+                Assert.AreEqual(helpTextStart,sw.ToString());
+            }
+        }
     }
 }

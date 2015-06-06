@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,14 @@ namespace ConfigCleaner
                 WriteHelp();
                 return;
             }
+
+            var path = args.FirstOrDefault();
+            if (path==null || !Directory.Exists(path))
+            {
+                Console.Out.WriteLine("Error: Input folder not found");
+                return;
+            }
+
             var p = new Processor();
             p.CleanFiles(args.FirstOrDefault());
         }
