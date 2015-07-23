@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -12,13 +13,13 @@ namespace ConfigCleaner
         public void CleanFile(string filePath)
         {
             var doc = LoadDocument(filePath);
-            var rootElement = doc.Element("appSettings");
-            IOrderedEnumerable<XElement> xml = SortAppSettings(rootElement);
+            var rootElement = doc.Root;
+            IEnumerable<XElement> xml = SortAppSettings(rootElement);
 
             var fileName = Path.GetFileName(filePath);
             var outputFolderName = GetOutputFolderName();
 
-            SaveSortedAppSettings(xml, string.Format(@"{0}\{1}", outputFolderName,fileName));
+            SaveSortedAppSettings(rootElement.Name.LocalName,xml, string.Format(@"{0}\{1}", outputFolderName, fileName));
         }
 
         private static string GetOutputFolderName()
@@ -36,17 +37,35 @@ namespace ConfigCleaner
             return XDocument.Load(path);
         }
 
-        private IOrderedEnumerable<XElement> SortAppSettings(XElement rootElement)
+        private IEnumerable<XElement> SortAppSettings(XElement rootElement)
         {
-            return rootElement
-              .Elements("add")
-              .Where(s => s.NodeType != XmlNodeType.Comment)
-              .OrderBy(s => s.Attribute("key").Value);
+
+
+            var elements = rootElement.Elements();
+            foreach (var element in elements)
+            {
+                if (element.NodeType == XmlNodeType.Comment)
+                {
+                    element.Remove();
+                   
+                }
+
+                if (!element.IsEmpty)
+                {
+                    var foo = SortAppSettings(element);
+                    element.ReplaceAll(foo);
+                }
+            }
+
+
+            return elements.OrderBy(s => s.Name.LocalName);
+
+     
         }
 
-        private void SaveSortedAppSettings(IOrderedEnumerable<XElement> xml,string path)
+        private void SaveSortedAppSettings(string root,IEnumerable<XElement> xml, string path)
         {
-            var doc = new XDocument(new XElement("appSettings", xml));
+            var doc = new XDocument(new XElement(root, xml));
             doc.Save(path);
         }
 
